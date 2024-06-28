@@ -1,0 +1,128 @@
+{% extends 'veranum/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Hoteles{% endblock %}
+{% block contenido %}
+<section>
+    <div class="container">
+        <h1 class="text-center my-2">Inventario Hoteles</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>Lista de hoteles</h4>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalRegistrarHotel">
+                                    Registrar Nuevo Hotel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Buscar hotel">
+                            <button class="btn btn-outline-secondary" type="button">Buscar</button>
+                        </div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>HOTELES</th>
+                                    <th>HABITACIONES</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for hotel in hoteles %}
+                                <tr>
+                                    <td>{{ hotel.nombre }}</td>
+                                    <td>{{ hotel.cantidad_habitaciones }}</td>
+                                    <td>
+                                        <a href="{% url 'lista_habitaciones' hotel.id %}" class="btn btn-primary btn-sm">
+                                            Ver Habitaciones
+                                        </a>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#modalInformacion" data-id="{{ hotel.id }}">
+                                            Información
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="modalRegistrarHotel" tabindex="-1" aria-labelledby="modalRegistrarHotelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalRegistrarHotelLabel">Registrar Hotel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" class="needs-validation" id="form-registrar">
+                    {% csrf_token %}
+                    {{ formRegistro|crispy }}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" name="registrar">Registrar Hotel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Eliminar Hotel -->
+<div class="modal fade" id="modalEliminarHotel" tabindex="-1" aria-labelledby="modalEliminarHotelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarHotelLabel">Eliminar Hotel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea eliminar el hotel?</p>
+            </div>
+            <div class="modal-footer">
+                <form id="form-eliminar" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Información -->
+<div class="modal fade" id="modalInformacion" tabindex="-1" aria-labelledby="modalInformacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalInformacionLabel">Información del Hotel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3 id="hotelNombre"></h3>
+                <p><strong>Ubicación:</strong> <span id="hotelUbicacion"></span></p>
+                <p><strong>Cantidad de habitaciones:</strong> <span id="hotelCantidadHabitaciones"></span></p>
+                <p><strong>Tipos de habitación:</strong> <span id="hotelTiposHabitacion"></span></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnEditar">Editar</button>
+                   <button type="button" class="btn btn-danger" id="btnEliminar">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'veranum/js/hoteles.js' %}"></script>
+{% endblock %}

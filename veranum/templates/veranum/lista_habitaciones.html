@@ -1,0 +1,116 @@
+{% extends 'veranum/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Habitaciones de {{ hotel.nombre }}{% endblock %}
+{% block contenido %}
+<section>
+    <div class="container">
+        <h1 class="text-center my-2">Habitaciones de {{ hotel.nombre }}</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>Lista de Habitaciones</h4>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalRegistrarHabitacion">
+                                    Registrar Nueva Habitacion
+                                </button>
+                           </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tipo de Habitación</th>
+                                    <th>Cantidad de Personas</th>
+                                    <th>Camas</th>
+                                    <th>Baños</th>
+                                    <th>Precio por Día</th>
+                                    <th>Disponible</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for habitacion in habitaciones %}
+                                <tr>
+                                    <td>{{ habitacion.tipo_habitacion }}</td>
+                                    <td>{{ habitacion.cantidad_personas }}</td>
+                                    <td>{{ habitacion.camas }}</td>
+                                    <td>{{ habitacion.banos }}</td>
+                                    <td>{{ habitacion.precio_por_dia }}</td>
+                                    <td>{% if habitacion.disponible %} Sí {% else %} No {% endif %}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#modalInformacion" data-id="{{ habitacion.id }}">
+                                            Información
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center">No hay habitaciones registradas.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal para Información -->
+<div class="modal fade" id="modalInformacion" tabindex="-1" aria-labelledby="modalInformacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalInformacionLabel">Información de la Habitación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3 id="habitacionTipo"></h3>
+                <p><strong>Cantidad de Personas:</strong> <span id="habitacionCantidadPersonas"></span></p>
+                <p><strong>Camas:</strong> <span id="habitacionCamas"></span></p>
+                <p><strong>Baños:</strong> <span id="habitacionBanos"></span></p>
+                <p><strong>Precio por Día:</strong> <span id="habitacionPrecio"></span></p>
+                <p><strong>Disponible:</strong> <span id="habitacionDisponible"></span></p>
+                <p><strong>Descripción:</strong> <span id="habitacionDescripcion"></span></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <a href="#" class="btn btn-primary" id="btnEditar">Editar</a>
+                    <a href="#" class="btn btn-danger" id="btnEliminar" onclick="return confirm('¿Estás seguro de que quieres eliminar esta habitación?')">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalRegistrarHabitacion" tabindex="-1" aria-labelledby="modalRegistrarHabitacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalRegistrarHabitacionLabel">Registrar Hotel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" class="needs-validation" id="form-registrar">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" name="registrar">Registrar Hotel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% block scripts %}
+    <script src="{% static 'veranum/js/habitaciones.js' %}"></script>
+{% endblock %}
+
+{% endblock %}
