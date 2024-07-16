@@ -1,0 +1,25 @@
+{% extends 'veranum/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Index{% endblock %}
+{% block contenido %}
+<main>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="text-center">Bienvenido a Veranum</h1>
+                </div>
+                <div class="col-md-12">
+                    <p class="text-center">Entrar como:</p>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% url 'lista_hoteles' 'Administrador' %}" class="btn btn-primary btn-lg btn-block">Administrador</a>
+                    <a href="{% url 'lista_hoteles' 'Gerente' %}" class="btn btn-primary btn-lg btn-block">Gerente</a>
+                    <a href="{% url 'lista_hoteles' 'Recepcionista'%}" class="btn btn-primary btn-lg btn-block">Recepcionista</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -5,6 +5,7 @@
 {% block contenido %}
 <section>
     <div class="container">
+        <h1 class="text-center my-2">Tipo de usuario: {{tipo_usuario}}</h1>
         <h1 class="text-center my-2">Habitaciones de {{ hotel.nombre }}</h1>
         <div class="row">
             <div class="col-md-12">
@@ -14,17 +15,20 @@
                             <div class="col-md-6">
                                 <h4>Lista de Habitaciones</h4>
                             </div>
+                            {% if tipo_usuario == 'Administrador' %}
                             <div class="col-md-6 d-flex justify-content-end">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalRegistrarHabitacion">
                                     Registrar Nueva Habitacion
                                 </button>
-                           </div>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="card-body">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
+                                    <th>Numero de Habitación</th>
                                     <th>Tipo de Habitación</th>
                                     <th>Cantidad de Personas</th>
                                     <th>Camas</th>
@@ -36,17 +40,24 @@
                             </thead>
                             <tbody>
                                 {% for habitacion in habitaciones %}
-                                <tr>
+                                <tr class='lista'>
+                                    <td>{{ habitacion.numero_habitacion }}</td>
                                     <td>{{ habitacion.tipo_habitacion }}</td>
                                     <td>{{ habitacion.cantidad_personas }}</td>
                                     <td>{{ habitacion.camas }}</td>
                                     <td>{{ habitacion.banos }}</td>
                                     <td>{{ habitacion.precio_por_dia }}</td>
-                                    <td>{% if habitacion.disponible %} Sí {% else %} No {% endif %}</td>
+                                    <td class="disponibilidad">{{ habitacion.disponible|yesno:"Sí,No" }}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#modalInformacion" data-id="{{ habitacion.id }}">
+                                            data-bs-target="#modalInformacion" data-id="{{ habitacion.id }}" data-usuario="{{tipo_usuario}}">
                                             Información
+                                        </button>
+                                        <button type="button" class="btn btn-warning btn-sm" onclick="cambiarDisponibilidad({{ habitacion.id }})">
+                                            Cambiar Disponibilidad
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalHistorialPrecios" data-id="{{ habitacion.id }}">
+                                            Historial de Precios
                                         </button>
                                     </td>
                                 </tr>
@@ -79,6 +90,7 @@
                 <p><strong>Baños:</strong> <span id="habitacionBanos"></span></p>
                 <p><strong>Precio por Día:</strong> <span id="habitacionPrecio"></span></p>
                 <p><strong>Disponible:</strong> <span id="habitacionDisponible"></span></p>
+                <p><strong>Servcios Extras:</strong> <span id="habitacionServicios"></span></p>
                 <p><strong>Descripción:</strong> <span id="habitacionDescripcion"></span></p>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -105,6 +117,24 @@
                         <button type="submit" class="btn btn-primary" name="registrar">Registrar Hotel</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalHistorialPrecios" tabindex="-1" aria-labelledby="modalHistorialPreciosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalHistorialPreciosLabel">Historial de Precios de la Habitación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="historialPreciosList">
+                    <!-- Aquí se mostrará dinámicamente el historial de precios -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

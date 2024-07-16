@@ -14,18 +14,16 @@
                             <div class="col-md-6">
                                 <h4>Lista de hoteles</h4>
                             </div>
+                            {% if tipo_usuario == 'Administrador'%}
                             <div class="col-md-6 d-flex justify-content-end">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalRegistrarHotel">
                                     Registrar Nuevo Hotel
                                 </button>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Buscar hotel">
-                            <button class="btn btn-outline-secondary" type="button">Buscar</button>
-                        </div>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -40,12 +38,16 @@
                                     <td>{{ hotel.nombre }}</td>
                                     <td>{{ hotel.cantidad_habitaciones }}</td>
                                     <td>
-                                        <a href="{% url 'lista_habitaciones' hotel.id %}" class="btn btn-primary btn-sm">
+                                        <a href="{% url 'lista_habitaciones' hotel.id  tipo_usuario %}" class="btn btn-primary btn-sm">
                                             Ver Habitaciones
                                         </a>
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#modalInformacion" data-id="{{ hotel.id }}">
+                                            data-bs-target="#modalInformacion" data-id="{{ hotel.id }}" data-usuario="{{tipo_usuario}}">
                                             Información
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#modalHabitaciones" data-id="{{ hotel.id }}">
+                                            Lista de precios
                                         </button>
                                     </td>
                                 </tr>
@@ -114,12 +116,29 @@
                 <h3 id="hotelNombre"></h3>
                 <p><strong>Ubicación:</strong> <span id="hotelUbicacion"></span></p>
                 <p><strong>Cantidad de habitaciones:</strong> <span id="hotelCantidadHabitaciones"></span></p>
-                <p><strong>Tipos de habitación:</strong> <span id="hotelTiposHabitacion"></span></p>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="button" class="btn btn-primary" id="btnEditar">Editar</button>
                    <button type="button" class="btn btn-danger" id="btnEliminar">Eliminar</button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para Lista de Habitaciones -->
+<div class="modal fade" id="modalHabitaciones" tabindex="-1" aria-labelledby="modalHabitacionesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalHabitacionesLabel">Lista de precios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="habitacionesContent">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

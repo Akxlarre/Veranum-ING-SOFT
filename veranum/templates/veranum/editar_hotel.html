@@ -17,7 +17,7 @@
                             {% csrf_token %}
                             {{ form|crispy }}
                             <div class="modal-footer">
-                                <a href="{% url 'lista_hoteles' %}" class="btn btn-secondary">Cancelar</a>
+                                <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
                                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                             </div>
                         </form>
