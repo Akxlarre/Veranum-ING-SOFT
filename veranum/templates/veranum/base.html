@@ -13,12 +13,14 @@
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--CSS-->
+    <link rel="stylesheet" href="{% static 'veranum/css/estilos.css'%}">
     <title>Veranum</title>
 </head>
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light m-5">
         <div class="container-fluid d-flex justify-content-center">
-            <a class="navbar-brand" href="{% url 'index' %}"><h1>Veranum</h1></a>
+            <a class="navbar-brand" href="{% url 'index' %}"><h1 class="tituloPag">Veranum</h1></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

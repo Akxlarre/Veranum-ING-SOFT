@@ -10,7 +10,7 @@ class RegistrarHabitacionForm(forms.ModelForm):
     class Meta:
         model = Habitacion
         fields = '__all__'
-        exclude = ['historial_precios']
+        exclude = ['historial_precios' , 'hotel']
 
     servicios_extras = forms.MultipleChoiceField(
         choices=Habitacion.SERVICIOS_EXTRAS_CHOICES,

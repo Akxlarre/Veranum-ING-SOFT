@@ -5,9 +5,9 @@
 {% block contenido %}
 <section>
     <div class="container">
-        <h1 class="text-center my-2">Tipo de usuario: {{tipo_usuario}}</h1>
-        <h1 class="text-center my-2">Habitaciones de {{ hotel.nombre }}</h1>
-        <div class="row">
+        <h4 class="text-center my-2">Tipo de usuario: {{tipo_usuario}}</h4>
+        <h1 class="text-center mt-4">Habitaciones de {{ hotel.nombre }}</h1>
+        <div class="row mt-4">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -40,22 +40,24 @@
                             </thead>
                             <tbody>
                                 {% for habitacion in habitaciones %}
-                                <tr class='lista'>
+                                <tr class='lista{{habitacion.id}}'>
                                     <td>{{ habitacion.numero_habitacion }}</td>
                                     <td>{{ habitacion.tipo_habitacion }}</td>
                                     <td>{{ habitacion.cantidad_personas }}</td>
                                     <td>{{ habitacion.camas }}</td>
                                     <td>{{ habitacion.banos }}</td>
                                     <td>{{ habitacion.precio_por_dia }}</td>
-                                    <td class="disponibilidad">{{ habitacion.disponible|yesno:"Sí,No" }}</td>
+                                    <td class="disponibilidad{{ habitacion.id }}">{{ habitacion.disponible|yesno:"Sí,No" }}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#modalInformacion" data-id="{{ habitacion.id }}" data-usuario="{{tipo_usuario}}">
                                             Información
                                         </button>
-                                        <button type="button" class="btn btn-warning btn-sm" onclick="cambiarDisponibilidad({{ habitacion.id }})">
-                                            Cambiar Disponibilidad
-                                        </button>
+                                        {% if tipo_usuario == 'Recepcionista' %}
+                                            <button type="button" class="btn btn-warning btn-sm" onclick="cambiarDisponibilidad({{ habitacion.id }})">
+                                                Cambiar Disponibilidad
+                                            </button>
+                                        {% endif %}
                                         <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalHistorialPrecios" data-id="{{ habitacion.id }}">
                                             Historial de Precios
                                         </button>
@@ -94,8 +96,10 @@
                 <p><strong>Descripción:</strong> <span id="habitacionDescripcion"></span></p>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    {% if tipo_usuario == 'Administrador' %}
                     <a href="#" class="btn btn-primary" id="btnEditar">Editar</a>
                     <a href="#" class="btn btn-danger" id="btnEliminar" onclick="return confirm('¿Estás seguro de que quieres eliminar esta habitación?')">Eliminar</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

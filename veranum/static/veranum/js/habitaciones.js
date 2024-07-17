@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 function cambiarDisponibilidad(habitacionId) {
     const url = `/cambiar-disponibilidad/${habitacionId}/`;
+    const lista = ".lista" + habitacionId.toString();
+    const fila = ".disponibilidad" + habitacionId.toString();
+    console.log(lista);
     fetch(url, {
         method: 'POST',
         headers: {
@@ -51,12 +54,12 @@ function cambiarDisponibilidad(habitacionId) {
         
         if (data.status === 'success') {
             // Buscar la fila de la tabla correspondiente
-            const row = document.querySelector(`.lista`);
+            const row = document.querySelector(`${lista}`);
             console.log('Fila encontrada:', row);  // Verifica si se encuentra la fila
             
             if (row) {
                 // Buscar la celda de disponibilidad en la posición correcta
-                const disponibilidadTd = row.querySelector('td:nth-child(7)');
+                const disponibilidadTd = row.querySelector(`${fila}`);
                 console.log('Celda de disponibilidad:', disponibilidadTd);  // Verifica la celda de disponibilidad
                 
                 if (disponibilidadTd) {

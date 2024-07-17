@@ -5,8 +5,9 @@
 {% block contenido %}
 <section>
     <div class="container">
-        <h1 class="text-center my-2">Inventario Hoteles</h1>
-        <div class="row">
+        <h4 class="text-center my-2">Tipo de usuario: {{tipo_usuario}}</h4>
+        <h1 class="text-center mt-4">Inventario Hoteles</h1>
+        <div class="row mt-4">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -118,8 +119,10 @@
                 <p><strong>Cantidad de habitaciones:</strong> <span id="hotelCantidadHabitaciones"></span></p>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="btnEditar">Editar</button>
-                   <button type="button" class="btn btn-danger" id="btnEliminar">Eliminar</button>
+                    {% if tipo_usuario == 'Administrador'%}
+                        <button type="button" class="btn btn-primary" id="btnEditar">Editar</button>
+                        <button type="button" class="btn btn-danger" id="btnEliminar">Eliminar</button>
+                    {% endif %}
                 </div>
             </div>
         </div>
